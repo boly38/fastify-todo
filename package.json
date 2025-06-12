@@ -1,0 +1,29 @@
+{
+  "name": "fastify-todo",
+  "version": "1.0.0",
+  "description": "a VERY simple todoList PoC using fastify as backend, and vite+jsx+preact as front-end",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
+  "dependencies": {
+    "@fastify/cors": "^11.0.1",
+    "@fastify/static": "^8.2.0",
+    "fastify": "^5.3.3",
+    "preact": "^10.26.9",
+    "react": "npm:@preact/compat",
+    "react-dom": "npm:@preact/compat"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-react-jsx": "^7.27.1",
+    "@vitejs/plugin-react": "^4.5.2",
+    "supertest": "^7.1.1",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.3"
+  }
+}

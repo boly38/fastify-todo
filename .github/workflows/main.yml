@@ -1,0 +1,46 @@
+name: Run tests
+on:
+  pull_request:
+    branches:
+      - main
+      - '*'
+  workflow_dispatch:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_PATH: "${GITHUB_ACTION_PATH}/"
+
+    strategy:
+      matrix:
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [20.x]
+
+    steps:
+      - name: SETUP - Checkout
+        uses: actions/checkout@v4
+
+      # https://github.com/pnpm/action-setup
+      - name: SETUP - Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: SETUP - Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: SETUP - Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          pnpm install --frozen-lockfile
+
+      - name: TEST - run tests
+        run: pnpm run test
