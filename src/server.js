@@ -4,6 +4,7 @@ import Fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifyStatic from '@fastify/static';
 import fs from 'fs';
+import os from "os";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,9 +45,17 @@ fastify.post('/api/todos', async (request, reply) => {
 let app;
 // Démarrer le serveur
 const startServer = async () => {
+    const port = 4000;
+    const host = '0.0.0.0';
+    const nodeVersion = process.version;
+    const userEndpoint = `http://${host}:${port}`;
     try {
-        app = await fastify.listen({port: 4000});
-        console.log(`Server listening on http://localhost:4000${frontendExists ? ' with frontend packaging present' : ''}`);
+        app = await fastify.listen({host, port});
+        let serverDescription = `Server (os: ${os.platform()} node:${nodeVersion}) listening on ${userEndpoint}`;
+        if (frontendExists) {
+            serverDescription += ' (with frontend)';
+        }
+        fastify.log.info(serverDescription);
         return app;
     } catch (err) {
         fastify.log.error(err);

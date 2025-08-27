@@ -2,13 +2,9 @@ import request from 'supertest';
 import { describe, it, expect, beforeAll } from 'vitest';
 import startServer from '../src/server.js';
 
-describe('Todo API', () => {
-  let app;
+const app =  await startServer();
 
-  // Avant tous les tests, attendre que l'app soit prête
-  beforeAll(async () => {
-    app = await startServer();
-  });
+describe('Todo API', () => {
 
   it('should fetch todos', async () => {
     const res = await request(app).get('/api/todos');

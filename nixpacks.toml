@@ -1,0 +1,27 @@
+# nixpacks.toml
+## node app - https://nixpacks.com/docs/providers/node
+# Node app include "vite" in dependencies, and nixpacks enable SPA_CADDY feature
+## so disabling CADDY has been enforced with this toml file (variables+nixPkgs) as we provide server too
+
+providers = ["node"]
+
+[variables]
+# NODE_VERSION = "20"
+PORT = "4000"
+NIXPACKS_SPA_CADDY = "false"
+NIXPACKS_NO_SPA = "true"
+
+[phases.setup]
+# Node version is fixed via nixPkgs
+nixPkgs = ["nodejs_20", "pnpm"]
+
+# for now project has no need to override 'nixpkgsArchive' but here is how to do that with an example
+## howTo fix archive : pick one commit sha from a tag commit of https://github.com/NixOS/nixpkgs/tags
+## example : git ls-remote https://github.com/NixOS/nixpkgs nixos-24.05 | cut -f1
+## nixpkgsArchive = 'b134951a4c9f3c995fd7be05f3243f8ecd65d798'
+
+[phases.build]
+cmds = ["pnpm install", "pnpm run build"]
+
+[start]
+cmd = "pnpm run start"
