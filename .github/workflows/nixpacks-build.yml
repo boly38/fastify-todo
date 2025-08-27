@@ -1,0 +1,43 @@
+name: Validate Nixpacks Build
+
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'nixpacks.toml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # we may use more simple action
+    # https://github.com/iloveitaly/github-action-nixpacks
+    steps:
+      # 1️⃣ Checkout
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Install Nixpacks and update PATH
+      - name: Install Nixpacks
+        shell: bash
+        run: |
+          ./scripts/install-nixpacks.sh
+
+      # 3️⃣ Build Nixpacks image
+      - name: Build Docker image with Nixpacks
+        run: |
+          nixpacks build . -t test-nixpacks-build
+
+      # 4️⃣ Optionnel : list build files
+      - name: Inspect built image
+        run: |
+          docker run --rm test-nixpacks-build ls -la
+      - name: Check Docker
+        run: docker --version
+      - name: Test container
+        if: success() && runner.os == 'Linux'
+        run: |
+          docker run --rm -d -p 4000:4000 test-nixpacks-build
+          sleep 5
+          # test if server respond
+          curl http://localhost:4000 || exit 1

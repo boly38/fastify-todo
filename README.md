@@ -4,6 +4,7 @@ a proof of concept (PoC) project
 
 ## feature
 - a todo list manager.
+- [nixpacks](https://nixpacks.com/) compatible app (cf. § HowTo)
 
 ## architecture
 
@@ -13,7 +14,6 @@ Backend API:
 
 Front-end: 
 - a single page with a form to add a new todo, plus a list todos view.
-
 
 ## tech stack
 - packages: [pnpm](https://pnpm.io/fr/),
